@@ -1,16 +1,26 @@
 import hashlib
 
-def  HashCrack(inputHash):
+def CrackHash(inputHash):
     try:
-        passFile = open("text.txt")
+        passwordlist = open("text.txt")
     except:
-        print("Could not find file.")
+        print("No passwords found...")
+#The passwords in the list need to be converted to utf-8 encoding
+#as cryptographic hash functions like sha-256 operate only on byte
+# sequences
+    for password in passwordlist:
+        encodepassword = password.encode("utf-8")
+#output of a hash function
+        digest = hashlib.sha256(encodepassword.strip()).hexdigest()
+    if digest == password:
+        print(f'Found it: {password}')
+    else:
+        print('oh lord')
 
-    for password in passFile:
-        encPass = password.encode("utf-8")
-        digest = hashlib.sha256(encPass.strip()).hexdigest()
-        if digest == inputHash:
-            print("Password Found: " + password)
-
+#__name__ == '__main' means if the program is being run directly
 if __name__ == '__main__':
-    HashCrack("HASH INPUT HERE")
+    CrackHash("sdhquwidyqwuiy3321212")
+
+
+#  make a script which when given a hash it should check with a
+# text file which holds passwords to see if they match
